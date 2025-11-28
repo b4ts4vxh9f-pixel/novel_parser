@@ -116,13 +116,22 @@ export async function fetchPage(url, page, retries = 3) {
                 throw new Error('Cloudflare challenge failed (JS disabled or detected)');
             }
 
-            if (
-                bodyText.includes('access denied') ||
-                bodyText.includes('blocked') ||
-                bodyText.includes('rate limit') ||
-                bodyText.includes('too many requests') ||
-                bodyText.includes('cloudflare')
-            ) {
+            const isBlocked = (
+                // Use more specific blocked phrases
+                bodyText.includes('access denied for your ip') ||
+                bodyText.includes('your request was blocked') ||
+                bodyText.includes('rate limit exceeded') ||
+                bodyText.includes('too many requests from your ip') ||
+
+                // General phrases, but require them only if the content is relatively small,
+                // suggesting a pure error page rather than a fully loaded site with a false positive keyword.
+                (html.length < 5000 && (
+                    bodyText.includes('access denied') ||
+                    bodyText.includes('blocked')
+                ))
+            );
+
+            if (isBlocked) {
                 console.warn('Possible rate limiting or blocking detected');
 
                 // If blocked, wait longer and recycle page
