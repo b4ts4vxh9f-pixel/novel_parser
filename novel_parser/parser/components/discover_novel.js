@@ -302,7 +302,8 @@ async function extractDescription(page, parsed) {
             '.summary',
             '[class*="summary"]',
             '.synopsis',
-            '[itemprop="description"]'
+            '[itemprop="description"]',
+            'story__summary', //LoTV
         ];
 
         for (const selector of selectors) {
