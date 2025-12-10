@@ -24,12 +24,18 @@ export async function fontConvert() {
             const ttf = await decompress(fontFile);
 
             fs.writeFileSync(dst, ttf);
-            console.log("✔ Done");
+            console.log("✔ Conversion done.");
+
+            // 🌟 Add the deletion step here 🌟
+            fs.unlinkSync(src);
+            console.log(`🗑 Deleted original file: ${file}`);
+            // 🌟 ----------------------------- 🌟
+
         } catch (err) {
             console.error("❌ Failed:", err);
         }
     }
-    console.log("All conversions finished.");
+    console.log("All conversions and cleanup finished.");
 }
 
-fontConvert();
+await fontConvert();
