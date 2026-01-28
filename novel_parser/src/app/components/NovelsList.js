@@ -114,7 +114,7 @@ export default function NovelsList() {
 
     return (
         <div className="w-full max-w-4xl mx-auto p-6">
-            <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-lg p-8">
+            <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-lg p-8 flex flex-col gap-4">
                 <div className="flex justify-between items-center mb-6">
                     <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">Novels ({novels.length})</h2>
                     <select
@@ -128,6 +128,11 @@ export default function NovelsList() {
                         <option value="1">Success</option>
                         <option value="-1">Error</option>
                     </select>
+                </div>
+
+                <div className={`flex flex-col gap-2 w-full mx-auto border border-zinc-200 dark:border-zinc-700 rounded-lg p-4`}>
+                    <div>1. when a novel has status <strong>{STATUS_LABELS[1].label || 'Unknown'}</strong>, click <strong>clean</strong> - it will remove most of watermarks and descramble text.</div>
+                    <div>2. click <strong>EPUB</strong> to download the file.</div>
                 </div>
 
                 {novels.length === 0 ? (
@@ -145,9 +150,12 @@ export default function NovelsList() {
                                     </div>
 
                                     <div className="flex flex-col items-end gap-2">
-                                        <span className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${STATUS_LABELS[novel.status]?.color || STATUS_LABELS[0].color}`}>
+                                        <div className={`flex flex-row gap-2`}>
+                                            <span>Status: </span>
+                                            <span className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${STATUS_LABELS[novel.status]?.color || STATUS_LABELS[0].color}`}>
                                             {STATUS_LABELS[novel.status]?.label || 'Unknown'}
                                         </span>
+                                        </div>
 
                                         {/* Action Buttons Row */}
                                         <div className="flex gap-2 mt-2">
